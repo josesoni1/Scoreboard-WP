@@ -14,12 +14,33 @@ if(! $conn )
   die('Could not connect: ' . mysql_error());
 }
 
+
+if( isset($_POST['ai']) ){
+	$ai = $_POST["ai"]; 	//	Año inicial
+	$af = $_POST["af"]; 	//	Año final
+	$mi = $_POST["mi"]; 	//	Mes inicial
+	$mf = $_POST["mf"]; 	//	Mes Final
+	$prog = $_POST["prog"]; // Programa que queremos consultar
+	$lc = $_POST["lc"]; 	// LC que queremos consultar
+}
+
+if( isset($_GET['ai']) ){
+	$ai = $_GET["ai"]; 		//	Año inicial
+	$af = $_GET["af"]; 		//	Año final
+	$mi = $_GET["mi"]; 		//	Mes inicial
+	$mf = $_["mf"]; 		//	Mes Final
+	$prog = $_GET["prog"]; 	// Programa que queremos consultar
+	$lc = $_GET["lc"]; 		// LC que queremos consultar
+}
+
+
+
 $sql1 ='SELECT LC.LC_name , sum(operation.app_ach) as ap, sum(operation.re_ach) as re, operation.year
 from LC inner join operation
 on LC.idLC = operation.LC_idLC 
 inner join program 
 on operation.program_idprogram = program.idprogram
-where operation.month between 0 and 7 
+where operation.month between '. $mi .' and '. $mf .' 
 group by LC.LC_name, operation.year';
 
 
